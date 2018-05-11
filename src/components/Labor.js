@@ -52,9 +52,63 @@ handleChangeMonth6Rate = (event) => {
   this.setState({month6rate:event.target.value})
 }
   render() {
+    let lineLaborTotal = 0;
+    let laborTotal = 0;
+
+    let laborItems = this.props.userInput.map((labor,index) => {
+      let cost1 = 0;
+      let cost2 = 0
+      let cost3 = 0;
+      let cost4 = 0;
+      let cost5 = 0;
+      let cost6 = 0;
+      if (labor.category === "Engr1") {
+      cost1 = 10000 * labor.month1rate;
+      cost2 = 10000 * labor.month2rate;
+      cost3 = 10000 * labor.month3rate;
+      cost4 = 10000 * labor.month4rate;
+      cost5 = 10000 * labor.month5rate;
+      cost6 = 10000 * labor.month6rate;
+      }
+      else if (labor.category === "Engr2") {
+      cost1 = 12000 * labor.month1rate;
+      cost2 = 12000 * labor.month2rate;
+      cost3 = 12000 * labor.month3rate;
+      cost4 = 12000 * labor.month4rate;
+      cost5 = 12000 * labor.month5rate;
+      cost6 = 12000 * labor.month6rate;  
+      }
+
+      lineLaborTotal = Number(cost1) + Number(cost2) + Number(cost3) + Number(cost4) + Number(cost5) + Number(cost6)
+        
+      laborTotal += lineLaborTotal
+
+      if (labor.name !== undefined){
+
+      return (
+        <tr key = {index}>
+          <td> {index} </td>
+          <td>{labor.name}</td>
+          <td>{labor.category}</td>
+          <td>{cost1}</td>
+          <td>{cost2}</td>
+          <td>{cost3}</td>
+          <td>{cost4}</td>
+          <td>{cost5}</td>
+          <td>{cost6}</td>
+          <td>{lineLaborTotal}</td>
+        </tr>
+      )
+      }
+
+      else {
+        return ''
+      }
+  }
+  )
     return (
       <div>
-
+        Labor total: {laborTotal}<br/>
         <Table striped bordered condensed>
           <thead>
           <tr>
@@ -72,32 +126,7 @@ handleChangeMonth6Rate = (event) => {
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>1</td>
-            <td>Jill Smith</td>
-            <td>Engr 1</td> 
-            <td>$2000</td>
-            <td>$2000</td>
-            <td>$2000</td>
-            <td>$2000</td>
-            <td>$2000</td>
-            <td>$2000</td>
-            <td>$12000</td>
-            <td>X</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>John Farmer</td>
-            <td>Engr 2</td> 
-            <td>$2500</td>
-            <td>$2500</td>
-            <td>$2500</td>
-            <td>$2500</td>
-            <td>$2500</td>
-            <td>$2500</td>
-            <td>$15000</td>
-            <td>X</td>
-          </tr>
+          {laborItems}
           </tbody>
         </Table>
 
@@ -132,6 +161,12 @@ handleChangeMonth6Rate = (event) => {
   }
 }
 
+const mapStateToProps = state => {
+  return{
+    userInput: state.userInput
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return{
     onSaveLabor : (name,category,month1rate,month2rate,month3rate,month4rate,month5rate,month6rate) => dispatch({type:'SAVE_LABOR', payload : {name: name,category:category, month1rate:month1rate, month2rate:month2rate, month3rate:month3rate, month4rate:month4rate, month5rate:month5rate, month6rate:month6rate}})
@@ -139,4 +174,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps) (Labor);
+export default connect(mapStateToProps, mapDispatchToProps) (Labor);

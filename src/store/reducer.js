@@ -1,5 +1,6 @@
 const initialState ={
     userInput: []
+    
 }
 
 const reducer =(state = initialState, action) => {
@@ -15,10 +16,14 @@ const reducer =(state = initialState, action) => {
             userInput : state.userInput.concat(action.payload)
         }
         case "SAVE_MATERIALS" :
-        return {
-            ...state,
-            userInput : state.userInput.concat(action.payload)
+
+        if(action.payload.titlem !== '' ){
+            return {
+                ...state,
+                userInput : state.userInput.concat(action.payload)
+            }
         }
+        
         
     }
 

@@ -36,11 +36,99 @@ class Travel extends Component {
     handleChangeMileage = (event) => {
         this.setState({mileage:event.target.value})
     }
+    
+    render() {
+    let travelTotal = 0;
+    let lineTravTotal = 0;
+    let travelItems = this.props.userInput.map((travel,index) => {
 
-  render() {
+      let travel1 = 0;
+      let travel2 = 0;
+      let travel3 = 0;
+      let travel4 = 0;
+      let travel5 = 0;
+      let travel6 = 0;
+
+      if (travel.month === "Jan") {
+          if (travel.destination === "Huntsville") {
+              travel1 = ((travel.days - 1) * 100) + (travel.days * 50) +(travel.mileage * .5);
+          }
+          else if (travel.destination === "Orlando") {
+            travel1 = ((travel.days - 1) * 120) + (travel.days * 60) +(travel.mileage * .5);
+          }
+        }
+        else if (travel.month === "Feb") {
+            if (travel.destination === "Huntsville") {
+                travel2 = ((travel.days - 1) * 100) + (travel.days * 50) +(travel.mileage * .5);
+            }
+            else if (travel.destination === "Orlando") {
+                travel2 = ((travel.days - 1) * 120) + (travel.days * 60) +(travel.mileage * .5);
+            }
+        }
+        else if (travel.month === "Mar") {
+            if (travel.destination === "Huntsville") {
+                travel3 = ((travel.days - 1) * 100) + (travel.days * 50) +(travel.mileage * .5);
+            }
+            else if (travel.destination === "Orlando") {
+                travel3 = ((travel.days - 1) * 120) + (travel.days * 60) +(travel.mileage * .5);
+            }
+        }
+        else if (travel.month === "Apr") {
+            if (travel.destination === "Huntsville") {
+                travel4 = ((travel.days - 1) * 100) + (travel.days * 50) +(travel.mileage * .5);
+            }
+            else if (travel.destination === "Orlando") {
+                travel4 = ((travel.days - 1) * 120) + (travel.days * 60) +(travel.mileage * .5);
+            }
+        } 
+        else if (travel.month === "May") {
+            if (travel.destination === "Huntsville") {
+                travel5 = ((travel.days - 1) * 100) + (travel.days * 50) +(travel.mileage * .5);
+            }
+            else if (travel.destination === "Orlando") {
+                travel5 = ((travel.days - 1) * 120) + (travel.days * 60) +(travel.mileage * .5);
+            }
+        }
+        else if (travel.month === "Jun") {
+            if (travel.destination === "Huntsville") {
+                travel6 = ((travel.days - 1) * 100) + (travel.days * 50) +(travel.mileage * .5);
+            }
+            else if (travel.destination === "Orlando") {
+                travel6 = ((travel.days - 1) * 120) + (travel.days * 60) +(travel.mileage * .5);
+            }
+        }
+       
+        lineTravTotal = Number(travel1) + Number(travel2) + Number(travel3) + Number(travel4) + Number(travel5) + Number(travel6)
+        
+        travelTotal += lineTravTotal
+
+        if (travel.title !== undefined){
+           
+            return (
+                <tr key = {index}>
+                  <td> {index} </td>
+                  <td>{travel.title}</td>
+                  <td>{travel.destination}</td>
+                  <td>{travel1}</td>
+                  <td>{travel2}</td>
+                  <td>{travel3}</td>
+                  <td>{travel4}</td>
+                  <td>{travel5}</td>
+                  <td>{travel6}</td>
+                  <td>{lineTravTotal}</td>
+                </tr>
+              )
+            }
+            else{
+                return ''
+            }
+              
+              
+            } )    
+         
     return (
       <div>
-
+        Travel total: {travelTotal}<br/>
         <Table bordered striped condensed>
             <thead>
           <tr>
@@ -58,32 +146,7 @@ class Travel extends Component {
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>1</td>
-            <td>Payload Review</td>
-            <td>Orlando</td> 
-            <td></td>
-            <td>$1500</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>$1500</td>
-            <td>X</td>
-          </tr>
-          <tr>
-          <td>2</td>
-          <td>Boondoggle</td>
-            <td>Huntsville</td> 
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>$4444</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>X</td>
-          </tr>
+            {travelItems}
           </tbody>
         </Table>
 
@@ -110,6 +173,12 @@ class Travel extends Component {
   }
 }
 
+const mapStateToProps = state => {
+    return {
+        userInput: state.userInput
+    }
+}
+
 const mapDispatchToProps = dispatch => {
     return{
       onSaveTravel : (title,destination,month,days,mileage) => dispatch({type:'SAVE_TRAVEL', payload : {title:title, destination:destination, month:month, days:days, mileage:mileage}})
@@ -117,4 +186,4 @@ const mapDispatchToProps = dispatch => {
     }
   }
   
-  export default connect(null, mapDispatchToProps) (Travel);
+  export default connect(mapStateToProps, mapDispatchToProps) (Travel);
